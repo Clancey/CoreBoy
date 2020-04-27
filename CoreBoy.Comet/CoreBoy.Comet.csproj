@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>CoreBoy</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Clancey.Comet.Reload" Version="0.0.13-alpha" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.3.0-pre" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreBoy\CoreBoy.csproj" />
+    <ProjectReference Include="..\..\Comet\src\Comet\Comet.csproj" />
+    <ProjectReference Include="..\..\Comet\src\Comet.Skia\Comet.Skia.csproj" />
+  </ItemGroup>
+</Project>

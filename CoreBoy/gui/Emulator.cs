@@ -27,8 +27,15 @@ namespace CoreBoy.gui
             Options = options;
         }
 
-        public void Run(CancellationToken token)
+        CancellationTokenSource runningTokenSource;
+        public void Run (CancellationToken token)
+		{
+
+		}
+        public void Run()
         {
+            Stop ();
+            runningTokenSource = new CancellationTokenSource ();
             if (!Options.RomSpecified || !Options.RomFile.Exists)
             {
                 throw new ArgumentException("The ROM path doesn't exist: " + Options.RomFile);
@@ -39,19 +46,19 @@ namespace CoreBoy.gui
 
             if (Options.Headless)
             {
-                Gameboy.Run(token);
+                Gameboy.Run(runningTokenSource.Token);
                 return;
             }
 
             if (Display is IRunnable runnableDisplay)
             {
-                _runnables.Add(new Thread(() => runnableDisplay.Run(token))
+                _runnables.Add(new Thread(() => runnableDisplay.Run(runningTokenSource.Token))
                 {
                     Priority = ThreadPriority.AboveNormal
                 });
             }
 
-            _runnables.Add(new Thread(() => Gameboy.Run(token))
+            _runnables.Add(new Thread(() => Gameboy.Run(runningTokenSource.Token))
             {
                 Priority = ThreadPriority.AboveNormal
             });
@@ -60,14 +67,14 @@ namespace CoreBoy.gui
             Active = true;
         }
 
-        public void Stop(CancellationTokenSource source)
+        public void Stop()
         {
             if (!Active)
             {
                 return;
             }
 
-            source.Cancel();
+            runningTokenSource.Cancel();
             _runnables.Clear();
         }
 
