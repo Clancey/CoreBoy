@@ -84,9 +84,9 @@ namespace CoreBoy.gpu
             return (color >> 8) & 0xff;
         }
 
-        public int[] GetPalette(int index)
+        public IReadOnlyList<int> GetPalette(int index)
         {
-            return _palettes[index].ToArray();
+            return _palettes[index];
         }
 
         public override string ToString()

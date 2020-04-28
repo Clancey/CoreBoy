@@ -4,22 +4,23 @@ namespace CoreBoy.gpu
 {
     public class IntQueue
     {
-        private Queue<int> _inner;
-        public IntQueue(int capacity) => _inner = new Queue<int>(capacity);
-        public int Size() => _inner.Count;
-        public void Enqueue(int value) => _inner.Enqueue(value);
-        public int Dequeue() => _inner.Dequeue();
-        public int Get(int index) => _inner.ToArray()[index];
-        public void Clear() => _inner.Clear();
+        List<int> queue;
+        //private Queue<int> _inner;
+        public IntQueue(int capacity) => queue = new List<int>(capacity);
+        public int Size() => queue.Count;
+        public void Enqueue (int value) => queue.Add (value);
+        public int Dequeue ()
+        {
+            var value = queue [0];
+            queue.RemoveAt (0);
+            return value;
+        }
+        public int Get (int index) => queue [index];
+        public void Clear() => queue.Clear();
 
         public void Set(int index, int value)
         {
-            lock (_inner)
-            {
-                var asArray = _inner.ToArray();
-                asArray[index] = value;
-                _inner = new Queue<int>(asArray);
-            }
+            queue [index] = value;
         }
     }
 }

@@ -36,9 +36,12 @@ namespace CoreBoy.memory
 
         public int Get(IRegister reg)
         {
-            return _registers.ContainsKey(reg.Address)
-                ? _values[reg.Address]
-                : throw new ArgumentException("Not valid register: " + reg);
+            try{
+                return _values[reg.Address];
+            }
+            catch{
+                throw new ArgumentException("Not valid register: " + reg);
+            }
         }
 
         public void Put(IRegister reg, int value)

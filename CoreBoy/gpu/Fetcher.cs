@@ -24,13 +24,6 @@ namespace CoreBoy.gpu
 
         private static readonly int[] EmptyPixelLine = new int[8];
 
-        private static readonly List<State> SpritesInProgress = new List<State> {
-            State.ReadSpriteTileId,
-            State.ReadSpriteFlags,
-            State.ReadSpriteData1,
-            State.ReadSpriteData2,
-            State.PushSprite
-        };
 
         private readonly IPixelFifo _fifo;
         private readonly IAddressSpace _videoRam0;
@@ -217,7 +210,15 @@ namespace CoreBoy.gpu
 
         public bool SpriteInProgress()
         {
-            return SpritesInProgress.Contains(_state);
+			switch (_state) {
+			    case State.ReadSpriteTileId:
+			    case State.ReadSpriteFlags:
+			    case State.ReadSpriteData1:
+			    case State.ReadSpriteData2:
+			    case State.PushSprite:
+				    return true;
+			}
+			return false;
         }
 
         public int[] Zip(int data1, int data2, bool reverse)
